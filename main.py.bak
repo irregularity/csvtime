@@ -9,10 +9,7 @@ csvfile = open('test.csv', newline='')
 outputfile = open('test1.csv', mode='w', newline='')
 data = csv.reader(csvfile)
 output = csv.writer(outputfile)
-
 header = next(data, None) #skip header line
-header.append('EST')
-header.append('Released?')
 if header:
     output.writerow(header)
 curr_time = dt.datetime.now(tz.utc)
@@ -20,10 +17,8 @@ curr_time = dt.datetime.now(tz.utc)
 
 
 def releasecheck(data, output):
-    
     for line in data:
-        line.append('')
-        line.append('')
+        
         linedt = dt.datetime.strptime(line[2], '%m/%d/%Y, %I:%M %p %Z').replace(tzinfo=dt.timezone.utc)
     
         
@@ -42,8 +37,7 @@ def toEST(data, output):
     #est = zoneinfo.ZoneInfo('localtime')
     for line in data:
 
-        
-        linedt = dt.datetime.strptime(line[2], '%m/%d/%Y, %I:%M %p %Z').replace(tzinfo=dt.timezone.utc)
+        linedt = dt.datetime.strptime(line[3], '%m/%d/%Y, %I:%M %p %Z').replace(tzinfo=dt.timezone.utc)
         line[3] = linedt.astimezone(est).strftime(fmt)
         output.writerow(line)
     
@@ -67,7 +61,7 @@ data = csv.reader(csvfile)
 output = csv.writer(outputfile)
 header = next(data, None)
 if header:
-    output.writerow(header) #skip header line
+    output.writerow(header)#skip header line
 toEST(data, output)
 
 
